@@ -11,15 +11,20 @@ Categories.init({
   },
   name: {
     type: DataTypes.STRING(45),
-    allowNull: false,
+    allowNull: false
   },
-  enabled: {
+  slug: {
+    type: DataTypes.STRING(45),
+    allowNull: false
+  },
+  use_in_menu: {
     type: DataTypes.BOOLEAN,
-    
+    defaultValue: false,    
   }
 }, {
   sequelize: connection,
   tableName: 'Categories',
+  timrestamps: true,
 });
 
 module.exports = Categories;
