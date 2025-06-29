@@ -5,10 +5,9 @@ const UsersRotas = express.Router();
 
 const controller = new UsersController();
 
-UsersRotas.get('/users', controller.listar);
-UsersRotas.get('/users/:id', controller.consultarPorId);
-UsersRotas.post('/users', controller.criar)
-UsersRotas.put('/users/:id', controller.atualizar);
-UsersRotas.delete('/users/:id',  controller.deletar);
+UsersRotas.get('/v1/user/:id', controller.consultarPorId);
+UsersRotas.post('/v1/user', controller.criar)
+UsersRotas.put('/v1/user/:id', controller.atualizar);
+UsersRotas.delete('/v1/user/:id',  controller.deletar);
 
 module.exports = UsersRotas;
