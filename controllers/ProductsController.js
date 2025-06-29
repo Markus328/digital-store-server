@@ -1,42 +1,42 @@
 
-const PostModel = require('../models/PostModel');
+const ProductsModel = require('../models/ProductsModel');
 
 
-class PostController {
+class ProductsController {
 
 
 
     listar(request, response) {
-        const dados = PostModel.listar();
+        const dados = ProductsModel.listar();
         return response.json (dados);
     }
     consultarPorId(request, response){
         const id = request.params.id;
-        const dados = PostModel.consultarPorId(id)
+        const dados = ProductsModel.consultarPorId(id)
         return response.json(dados);
     }
     criar(request, response) {
         const body = request.body;
-         PostModel.criar(body);
+         ProductsModel.criar(body);
         return response.status(201).json({
-            message:'POst cadastrado com sucesso.'
+            message:'Cadastrado com sucesso.'
         })
     }
     atualizar(request,response){
        const id = request.params.id;
        const body = request.body;
-         PostModel.atualizar(id, body)
+         ProductsModel.atualizar(id, body)
          return response.json({
-            message: "Post atualizado com sucesso."
+            message: "Atualizado com sucesso."
          })
     }
     deletar(request, response){
         const id = request.params.id;
-        PostModel.deletar(id)
+        ProductsModel.deletar(id)
         return response.json({
-            message:'post deletado com sucesso.'
+            message:'Deletado com sucesso.'
         })
     }
 
 }
-module.exports = PostController;
+module.exports = ProductsController;

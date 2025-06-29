@@ -12,6 +12,10 @@ Tags.init({
   name: {
     type: DataTypes.STRING(45),
     allowNull: false,
+  },
+  enabled: {
+    type: DataTypes.BOOLEAN,
+    
   }
 }, {
   sequelize: connection,
