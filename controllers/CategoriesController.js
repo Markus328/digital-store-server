@@ -1,15 +1,15 @@
-const TagsModel = require('../models/TagsModel');
+const CategoriesModel = require('../models/CategoriesModel');
 
-class TagsController {
+class CategoriesController {
   async listar(req, res) {
-    const dados = await TagsModel.findAll();
+    const dados = await CategoriesModel.findAll();
     return res.json(dados);
   }
 
   async criar(req, res) {
     try {
       const body = req.body;
-      const novaTag = await TagsModel.create(body);
+      const novaTag = await CategoriesModel.create(body);
       return res.status(201).json({
         message: "tag criada com sucesso",
         tag: novaTag
@@ -21,4 +21,4 @@ class TagsController {
   }
 }
 
-module.exports = TagsController;
+module.exports = CategoriesController;

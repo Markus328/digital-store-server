@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require('sequelize');
 const connection = require('../config/connection');
 
-class Tags extends Model {}
+class Categories extends Model {}
 
-Tags.init({
+Categories.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -19,7 +19,7 @@ Tags.init({
   }
 }, {
   sequelize: connection,
-  tableName: 'tags',
+  tableName: 'Categories',
 });
 
-module.exports = Tags;
+module.exports = Categories;

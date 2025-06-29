@@ -5,14 +5,14 @@ const ProductsRotas = express.Router();
 
 const productsController = new ProductsController();
 
-ProductsRotas.get('/post', productsController.listar);
+ProductsRotas.get('/products', productsController.listar);
 
-ProductsRotas.get('/post/:id', productsController.consultarPorId);
+ProductsRotas.get('/products/:id', productsController.consultarPorId);
 
-ProductsRotas.post('/post', productsController.criar)
+ProductsRotas.post('/products', productsController.criar)
 
-ProductsRotas.put('/post/:id', productsController.atualizar);
+ProductsRotas.put('/products/:id', productsController.atualizar);
 
-ProductsRotas.delete('/post/:id',  productsController.deletar);
+ProductsRotas.delete('/products/:id',  productsController.deletar);
 
 module.exports = ProductsRotas;

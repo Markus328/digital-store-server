@@ -5,7 +5,6 @@ const ProductsModel = require('../models/ProductsModel');
 class ProductsController {
 
 
-
     listar(request, response) {
         const dados = ProductsModel.listar();
         return response.json (dados);

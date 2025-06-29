@@ -1,6 +1,6 @@
 const express = require('express');
-const UsuariosRotas = require('./usuariosRotas');
-const PostRotas = require('./ProductsRotas');
+const UsersRotas = require('./UsersRotas');
+const ProductsRotas = require('./ProductsRotas');
 const jwt =require('jsonwebtoken');
 require ('dotenv').config();
 const CategoriesRotas = require("./CategoriesRotas");
@@ -31,7 +31,7 @@ RotasPrivadas.use((request, response, next) => {
 
 });
 
-RotasPrivadas.use(UsuariosRotas);
+RotasPrivadas.use(UsersRotas);
 RotasPrivadas.use(ProductsRotas);
 RotasPrivadas.use(CategoriesRotas);
 
