@@ -1,41 +1,100 @@
-
-const ProductsModel = require('../models/ProductsModel');
-
+const ProductsService = require("../services/ProductsService");
 
 class ProductsController {
+  async buscar(req, res) {
+    let { limit, page, match, fields, category_ids, price_range, option } =
+      req.query;
 
-
-    listar(request, response) {
-        const dados = ProductsModel.listar();
-        return response.json (dados);
+    if (fields) {
+      fields = fields.split(",");
     }
-    consultarPorId(request, response){
-        const id = request.params.id;
-        const dados = ProductsModel.consultarPorId(id)
-        return response.json(dados);
+    if (category_ids) {
+      category_ids = category_ids.split(",");
     }
-    criar(request, response) {
-        const body = request.body;
-         ProductsModel.criar(body);
-        return response.status(201).json({
-            message:'Cadastrado com sucesso.'
-        })
-    }
-    atualizar(request,response){
-       const id = request.params.id;
-       const body = request.body;
-         ProductsModel.atualizar(id, body)
-         return response.json({
-            message: "Atualizado com sucesso."
-         })
-    }
-    deletar(request, response){
-        const id = request.params.id;
-        ProductsModel.deletar(id)
-        return response.json({
-            message:'Deletado com sucesso.'
-        })
+    if (price_range) {
+      price_range = price_range.split(",");
     }
 
+    if (limit && page) {
+      limit = parseInt(limit);
+      page = parseInt(page);
+    }
+    try {
+      const dados = await ProductsService.listar(
+        limit,
+        page,
+        match,
+        fields,
+        category_ids,
+        price_range,
+        option,
+      );
+      return res.json(dados);
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao buscar produtos",
+        error: e.message,
+      });
+    }
+  }
+  async consultarPorId(req, res) {
+    const id = req.params.id;
+    try {
+      const dados = await ProductsService.consultarPorId(id);
+      return res.json(dados);
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao consultar produto por ID",
+        error: e.message,
+      });
+    }
+  }
+  async criar(req, res) {
+    const body = req.body;
+    try {
+      await ProductsService.criar(body);
+      return res.json({
+        message: "Criado com sucesso.",
+      });
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao criar produto",
+        error: e.message,
+      });
+    }
+    return res.json({
+      message: "Criado com sucesso.",
+    });
+  }
+  async atualizar(req, res) {
+    const id = req.params.id;
+    const body = req.body;
+    try {
+      await ProductsService.atualizar(id, body);
+      return res.json({
+        message: "Atualizado com sucesso.",
+      });
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao atualizar produto",
+        error: e.message,
+      });
+    }
+  }
+  async deletar(req, res) {
+    const id = req.params.id;
+    try {
+      await ProductsService.deletar(id);
+      return res.json({
+        message: "Deletado com sucesso.",
+      });
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao deletar produto",
+        error: e.message,
+      });
+    }
+  }
 }
+
 module.exports = ProductsController;

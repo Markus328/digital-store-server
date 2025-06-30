@@ -1,38 +1,32 @@
-const express = require('express');
-const RotasPrivadas = require('./rotas/RotasPrivadas');
-const RotasPublicas = require('./rotas/RotasPublicas');
-const cors = require('cors');
+const express = require("express");
 
-const host ="localhost"
-const port = 3000;
+const {
+  connection,
+  testConnection,
+  startConnection,
+} = require("./config/connection");
 
-const app = express()
-app.use(express.json())
-app.use(cors());
-app.get('/',(request, response) => {
-    return response.send("ÓLa, eu sou um backend c0m nodeJS + Express")
-});
-// ROTAS PRIVADAS
-app.use(RotasPrivadas)
-// ROTAS PUBLICAS
-app.use(RotasPublicas)
+async function startServer() {
+  await startConnection();
 
-app.put('/teste/:codigo', (request, response) => {
-    // query
-    const query = request.query;
-    let dados = "Query: " + query.nome + "-" + query.sobrenome;
+  const cors = require("cors");
+  const RotasPrivadas = require("./rotas/RotasPrivadas");
+  const RotasPublicas = require("./rotas/RotasPublicas");
 
-    //  params
-    const params = request.params;
-    dados += '<br> Params:' + params.codigo
-    
-    // Body
-    const body = request.body;
-    dados += "<br> Body:" + JSON.stringify(body);
+  const host = "localhost";
+  const port = 3000;
 
-    return response.send(dados);
-});
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
+  // ROTAS PRIVADAS
+  app.use(RotasPrivadas);
+  // ROTAS PUBLICAS
+  app.use(RotasPublicas);
 
-app.listen(port, host ,() => {
-    console.log(`Servidor executando em http://${host}:${port}`)
-});
+  app.listen(port, host, () => {
+    console.log(`Servidor executando em http://${host}:${port}`);
+  });
+}
+
+startServer();
