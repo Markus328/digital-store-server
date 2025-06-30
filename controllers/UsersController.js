@@ -1,42 +1,94 @@
-
-const UsersModel = require('../models/UsersModel');
-
+const UsersService = require("../services/UsersService");
 
 class UsersController {
+   async buscar(req, res) {
+    let { limit, page, match, fields, category_ids, price_range, option } =
+      req.query;
 
-
-
-    listar(request, response) {
-        const dados = UsersModel.listar();
-        return response.json (dados);
+    if (fields) {
+      fields = fields.split(",");
     }
-    consultarPorId(request, response){
-        const id = request.params.id;
-        const dados = UsersModel.consultarPorId(id)
-        return response.json(dados);
+    if (category_ids) {
+      category_ids = category_ids.split(",");
     }
-    criar(request, response) {
-        const body = request.body;
-         UsersModel.criar(body);
-        return response.status(201).json({
-            message:'Usuario cadastrado com sucesso.'
-        })
-    }
-    atualizar(request,response){
-       const id = request.params.id;
-       const body = request.body;
-         UsersModel.atualizar(id, body)
-         return response.json({
-            message: "Usuario atualizado com sucesso."
-         })
-    }
-    deletar(request, response){
-        const id = request.params.id;
-        UsersModel.deletar(id)
-        return response.json({
-            message:'Usuario deletado com sucesso.'
-        })
+    if (price_range) {
+      price_range = price_range.split(",");
     }
 
+    if (limit && page) {
+      limit = parseInt(limit);
+      page = parseInt(page);
+    }
+    try {
+      const dados = await UsersService.listar(
+        limit,
+        page,
+        match,
+        fields,
+        category_ids,
+        price_range,
+        option,
+      );
+      return res.json(dados);
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao buscar usuário.",
+        error: e.message,
+      });
+    }
+  }
+  async consultarPorId(req, res) {
+    const id = req.params.id;
+    const dados = await UsersService.consultarPorId(id);
+    if (!dados) {
+      return res.status(404).json({
+        message: "Not Found: Usuário não encontrado.",
+      });
+    }
+    return res.json(dados);
+  }
+  async criar(req, res) {
+    const body = req.body;
+    try {
+      await UsersService.criar(body);
+      return res.json({
+        message: "Usuário cadastrado com sucesso.",
+      });
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao cadastrar usuário.",
+        error: e.message,
+      });
+    }
+  }
+  async atualizar(req, res) {
+    const id = req.params.id;
+    const body = req.body;
+    try {
+      await UsersService.atualizar(id, body);
+      return res.json({
+        message: "Cadastro de usuário atualizado com sucesso.",
+      });
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao atualizar cadastro de usuário.",
+        error: e.message,
+      });
+    }
+  }
+  async deletar(req, res) {
+    const id = req.params.id;
+    try {
+      await UsersService.deletar(id);
+      return res.json({
+        message: "Usuário deletado com sucesso.",
+      });
+    } catch (e) {
+      return res.status(400).json({
+        message: "Bad Request: Erro ao deletar usuário.",
+        error: e.message,
+      });
+    }
+  }
 }
 module.exports = UsersController;
