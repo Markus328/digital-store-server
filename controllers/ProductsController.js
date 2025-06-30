@@ -39,15 +39,13 @@ class ProductsController {
   }
   async consultarPorId(req, res) {
     const id = req.params.id;
-    try {
-      const dados = await ProductsService.consultarPorId(id);
-      return res.json(dados);
-    } catch (e) {
-      return res.status(400).json({
-        message: "Bad Request: Erro ao consultar produto por ID",
-        error: e.message,
+    const dados = await ProductsService.consultarPorId(id);
+    if (!dados) {
+      return res.status(404).json({
+        message: "Not Found: Produto não encontrado",
       });
     }
+    return res.json(dados);
   }
   async criar(req, res) {
     const body = req.body;
