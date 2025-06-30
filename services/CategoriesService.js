@@ -1,12 +1,49 @@
-import CategoriesModel from "../models/CategoriesModel.js";
+
+const CategoriesModel = require("../models/CategoriesModel.js");
+const { Op } = require("sequelize");
 
 class CategoriesService {
-  static async listar(limit, page, fields, use_in_menu) {
+  static async listar(
+    limit = 12,
+    page = 1,
+    match = "",
+    fields = ["id", "name", "price"],
+    category_ids = [],
+    price_range = [0, 1000],
+    option = null,
+  ) {
+    const whereConditions = {};
+    if (match) {
+      whereConditions.name = {
+        [Op.like]: `%${match}%`,
+      };
+    }
+    if (price_range && price_range.length === 2) {
+      whereConditions.price = {
+        [Op.between]: price_range,
+      };
+    }
+    if (option) {
+      whereConditions.option = {
+        [Op.eq]: option,
+      };
+    }
+
+    const include = [];
+    if (category_ids && category_ids.length > 0) {
+      include.push({
+        model: CategoriesModel,
+        where: { id: { [Op.in]: category_ids } },
+        required: true,
+      });
+    }
+
     return await CategoriesModel.findAll({
-      limit,
-      offset: (page - 1) * limit,
+      where: whereConditions,
+      limit: limit,
       attributes: fields,
-      where: { use_in_menu },
+      offset: (page - 1) * limit,
+      include: include,
     });
   }
 
@@ -14,23 +51,23 @@ class CategoriesService {
     return await CategoriesModel.findByPk(id);
   }
 
-  static async criar(categoryData) {
-    return await CategoriesModel.create(categoryData);
+  static async criar(productData) {
+    return await CategoriesModelModel.create(productData);
   }
 
-  static async atualizar(id, categoryData) {
-    const category = await CategoriesModel.findByPk(id);
-    if (category) {
-      return await category.update(categoryData);
+  static async atualizar(id, productData) {
+    const product = await CategoriesModelModel.findByPk(id);
+    if (product) {
+      return await product.update(productData);
     }
     return null;
   }
 
   static async deletar(id) {
-    const category = await CategoriesModel.findByPk(id);
-    if (category) {
-      await category.destroy();
-      return category;
+    const product = await CategoriesModel.findByPk(id);
+    if (product) {
+      await product.destroy();
+      return product;
     }
     return null;
   }
