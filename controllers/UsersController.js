@@ -1,42 +1,6 @@
 const UsersService = require("../services/UsersService");
 
 class UsersController {
-   async buscar(req, res) {
-    let { limit, page, match, fields, category_ids, price_range, option } =
-      req.query;
-
-    if (fields) {
-      fields = fields.split(",");
-    }
-    if (category_ids) {
-      category_ids = category_ids.split(",");
-    }
-    if (price_range) {
-      price_range = price_range.split(",");
-    }
-
-    if (limit && page) {
-      limit = parseInt(limit);
-      page = parseInt(page);
-    }
-    try {
-      const dados = await UsersService.listar(
-        limit,
-        page,
-        match,
-        fields,
-        category_ids,
-        price_range,
-        option,
-      );
-      return res.json(dados);
-    } catch (e) {
-      return res.status(400).json({
-        message: "Bad Request: Erro ao buscar usuário.",
-        error: e.message,
-      });
-    }
-  }
   async consultarPorId(req, res) {
     const id = req.params.id;
     const dados = await UsersService.consultarPorId(id);

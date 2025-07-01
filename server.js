@@ -1,13 +1,13 @@
 const express = require("express");
 
-const {
-  connection,
-  testConnection,
-  startConnection,
-} = require("./config/connection");
+const startConnection = require("./scripts/startConnection");
 
 async function startServer() {
   await startConnection();
+
+  const CategoriesModel = require("./models/CategoriesModel");
+  const ProductsModel = require("./models/ProductsModel");
+  const UsersModel = require("./models/UsersModel");
 
   const cors = require("cors");
   const RotasPrivadas = require("./rotas/RotasPrivadas");

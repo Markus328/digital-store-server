@@ -21,13 +21,4 @@ async function testConnection() {
   }
 }
 
-async function startConnection() {
-  console.log("Iniciando conexão com o banco de dados...");
-  if (!(await testConnection())) {
-    return;
-  }
-  await connection.sync({ alter: true });
-  require("../database/associations")();
-}
-
-module.exports = { connection, testConnection, startConnection };
+module.exports = { connection, testConnection };

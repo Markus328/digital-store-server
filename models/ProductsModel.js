@@ -48,7 +48,7 @@ ProductsModel.init(
   },
   {
     sequelize: connection,
-    model: "Products",
+    modelName: "Products",
     tableName: "Products",
     timestamps: true,
   },
